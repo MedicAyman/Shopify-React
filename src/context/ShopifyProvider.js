@@ -34,8 +34,13 @@ const ShopifyProvider = ({ children }) => {
 		setProducts(products);
 	};
 	const fetchProductWithHandle = async handle => {
-		const product = await client.product.fetchByHandle(handle);
-		setProduct(product);
+		try {
+			const product = await client.product.fetchByHandle(handle);
+			console.log('fetchProductWithHandle', product);
+			setProduct(product);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 	const closeCart = () => {};
 	const openCart = () => {};
@@ -46,9 +51,27 @@ const ShopifyProvider = ({ children }) => {
 		createCheckout();
 	}, []);
 
-	console.log(checkout);
-
-	return <ShopifyContext.Provider>{children}</ShopifyContext.Provider>;
+	return (
+		<ShopifyContext.Provider
+			value={{
+				product,
+				products,
+				checkout,
+				isCartOpen,
+				isMenuOpen,
+				addItemToCheckout,
+				removeLineItem,
+				fetchAllProducts,
+				fetchProductWithHandle,
+				closeCart,
+				closeMenu,
+				openMenu,
+				openCart
+			}}
+		>
+			{children}
+		</ShopifyContext.Provider>
+	);
 };
 
 const ShopConsumer = ShopifyContext.Consumer;
