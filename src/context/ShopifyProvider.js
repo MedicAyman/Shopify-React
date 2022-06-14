@@ -11,7 +11,7 @@ const ShopifyProvider = ({ children }) => {
 	const [products, setProducts] = useState([]);
 	const [product, setProduct] = useState(null);
 	const [checkout, setCheckout] = useState(null);
-	const [isCartOpen, setIsCartOpen] = useState(false);
+	const [isCartOpen, setIsCartOpen] = useState(true);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const createCheckout = async () => {
@@ -42,10 +42,18 @@ const ShopifyProvider = ({ children }) => {
 			console.log(error);
 		}
 	};
-	const closeCart = () => {};
-	const openCart = () => {};
-	const closeMenu = () => {};
-	const openMenu = () => {};
+	const closeCart = () => {
+		setIsCartOpen(false);
+	};
+	const openCart = () => {
+		setIsCartOpen(true);
+	};
+	const closeMenu = () => {
+		setIsMenuOpen(false);
+	};
+	const openMenu = () => {
+		setIsMenuOpen(true);
+	};
 
 	useEffect(() => {
 		createCheckout();

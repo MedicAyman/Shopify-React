@@ -16,7 +16,7 @@ function Home() {
 			<Grid templateColumns="repeat(3, 1fr)">
 				{products.map(product => (
 					<Box _hover={{ opacity: '80%' }} textAlign="center">
-						<Link key={product.id} to={`/products/${product.handle}`}>
+						<Link key={product.bundle} to={`/products/${product.handle}`}>
 							<Image
 								src={product.images[0].src}
 								boxSize="500px"
