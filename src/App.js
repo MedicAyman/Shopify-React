@@ -9,8 +9,9 @@ function App() {
 	return (
 		<Router>
 			<NavBar />
-			<Cart />
 			<NavMenu />
+			<Cart />
+
 			<Routes>
 				<Route path="/products/:handle" element={<ProductPage />} />
 				<Route path="/" exact element={<Home />} />
