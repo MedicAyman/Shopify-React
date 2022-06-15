@@ -10,13 +10,14 @@ const client = Client.buildClient({
 const ShopifyProvider = ({ children }) => {
 	const [products, setProducts] = useState([]);
 	const [product, setProduct] = useState(null);
-	const [checkout, setCheckout] = useState(null);
-	const [isCartOpen, setIsCartOpen] = useState(true);
+	const [checkout, setCheckout] = useState('');
+	const [isCartOpen, setIsCartOpen] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const createCheckout = async () => {
 		if (localStorage.checkout_id) {
-			fetchCheckout(localStorage.checkout_id);
+			await fetchCheckout(localStorage.checkout_id);
+			console.log('checkout exists');
 		} else {
 			const checkout = await client.checkout.create();
 			localStorage.setItem('checkout_id', checkout.id);
@@ -27,8 +28,27 @@ const ShopifyProvider = ({ children }) => {
 		const checkout = await client.checkout.fetch(checkout_id);
 		setCheckout(checkout);
 	};
-	const addItemToCheckout = async () => {};
-	const removeLineItem = async lineItemIdsToRemove => {};
+	const addItemToCheckout = async (variantId, quantity) => {
+		const lineItemsToAdd = [
+			{
+				variantId,
+				quantity: parseInt(quantity, 10)
+			}
+		];
+		const newCheckout = await client.checkout.addLineItems(
+			checkout.id,
+			lineItemsToAdd
+		);
+		setCheckout(newCheckout);
+		openCart();
+	};
+	const removeLineItem = async lineItemIdsToRemove => {
+		const newCheckout = await client.checkout.removeLineItems(
+			checkout.id,
+			lineItemIdsToRemove
+		);
+		setCheckout(newCheckout);
+	};
 	const fetchAllProducts = async () => {
 		const products = await client.product.fetchAll();
 		setProducts(products);
