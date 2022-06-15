@@ -17,7 +17,6 @@ const ShopifyProvider = ({ children }) => {
 	const createCheckout = async () => {
 		if (localStorage.checkout_id) {
 			await fetchCheckout(localStorage.checkout_id);
-			console.log('checkout exists');
 		} else {
 			const checkout = await client.checkout.create();
 			localStorage.setItem('checkout_id', checkout.id);
@@ -56,7 +55,7 @@ const ShopifyProvider = ({ children }) => {
 	const fetchProductWithHandle = async handle => {
 		try {
 			const product = await client.product.fetchByHandle(handle);
-			console.log('fetchProductWithHandle', product);
+
 			setProduct(product);
 		} catch (error) {
 			console.log(error);
